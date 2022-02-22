@@ -7,6 +7,7 @@ images = []
 menu = ""
 tags = []
 title = "Formulas with MathJax"
+draft = true
 +++
 
 Mathematical equations in form of LaTeX or MathML code can be rendered with the support of [MathJax](https://www.mathjax.org). MathML works out of the box. If you're using LaTeX you need to wrap your equation with `$$` as shown in the following example:

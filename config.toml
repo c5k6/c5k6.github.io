@@ -19,16 +19,16 @@ theme = "hugo-icarus-theme"
 
 [params]
     # Tell me who you are
-    author = "John Doe"
-    bio = "Blogger - Programmer - Gopher"
+    author = "Jeffery"
+    bio = "Blogger - Programmer"
     location = "Earth"
     site_description = ""
     copyright  = "Powered by [Hugo](//gohugo.io). Theme by [PPOffice](http://github.com/ppoffice)."
-    avatar = "css/images/avatar.png"
+    avatar = "css/images/good.png"
     # Enter your email address to display your Gravatar icon in the profile. If not set the theme
     # will fallback to the avatar.
-    gravatar = "you@example.com"
-    logo = "css/images/logo.png"
+    gravatar = "jeffery062@gmail.com"
+    logo = "css/images/good.png"
     disable_mathjax = false # set to true to disable MathJax
 
     # define which types of pages should be shown. By default the type with the most regular pages
@@ -64,14 +64,14 @@ theme = "hugo-icarus-theme"
 
 # Enter a link for the follow button on the left
 [params.profile]
-    follow_button = "https://github.com/digitalcraftsman"
+    follow_button = "https://github.com/c5k6"
 
 
 [social]
 # Add your social network accounts to the profile section on the left
 # by entering your username. The links to your account will be
 # created automatically.
-    github          = "digitalcraftsman"
+    github          = "c5k6"
     gitlab          = ""
     bitbucket       = ""
     jsfiddle        = ""
@@ -98,7 +98,7 @@ theme = "hugo-icarus-theme"
     facebook        = ""
     facebook_admin  = ""
     twitter_domain  = ""
-    twitter         = "spf13"
+    twitter         = "Che_Wei_Chang"
 
 # Enable and disable widgets for the right sidebar
 [params.widgets]
@@ -106,3 +106,4 @@ theme = "hugo-icarus-theme"
     categories = true
     tags = true
     tag_cloud = true
+    

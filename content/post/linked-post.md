@@ -5,8 +5,18 @@ tags = ["golang", "programming", "theme", "hugo"]
 categories = ["programming"]
 menu = "main"
 banner = "banners/placeholder.png"
+draft= true
 +++
 
 I'm a linked post in the menu. You can add other posts by adding the following line to the frontmatter:
 
-    menu = "main"
+# This is title
+## discription
+hello world cpp code
+## code
+```c++
+int main(){
+    std::cout << "hello world" << std::endl;
+    return 0;
+}
+```
