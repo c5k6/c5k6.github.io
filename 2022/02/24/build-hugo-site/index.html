@@ -16,28 +16,34 @@
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600" rel=stylesheet type=text/css>
 <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel=stylesheet type=text/css>
 <meta property="og:title" content="Build Hugo Site">
-<meta property="og:description" content="建立全自動部屬的hugo靜態網站 本篇文章使用的是hugo本地預覽後，直接推送修改到github上，然後觸發github-action然後部屬到gitpages 不是通常的推本地編譯好的public資料夾到gitpages上。
-大綱 這篇文章內容:
- 安裝hugo 創建一個hugo專案 兩個github repo  blogger，包含兩個分支  blogger本體分支 佈署分支   theme  對喜歡的theme fork, 對於主題的修改都會新增在這邊。     github pages  github寄放靜態網站功能   github action  用於建構並佈署    安裝hugo 詳細內容可以看官網
- 設定chocolatey: 用系統管理者開啟powershell後輸入  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) 安裝hugo  choco install hugo -confirm 創建hugo專案 REM 創建專案 hugo new site quickstart REM 使用submodule管理theme，路徑放置在themes/ananke cd quickstart git init git submodule add https://github.">
+<meta property="og:description" content="建立全自動部屬的hugo靜態網站 本篇最後成果會是只要pushcommit後，就會自動部屬到git-pages上，直接進行blogger的更新。
+ 發布文章流程:   寫文章->git push->blogger看成果
+  開發及部屬流程:   寫文章->本地hugo server預覽->gitpush到gihutb上->github-action被觸發建構hugo靜態網站到git-pages->成功發布文章
+ 大綱 這篇文章內容:
+ 安裝hugo 創建一個hugo專案 兩個github repo  repo: blogger(包含兩個分支)  branch: blogger本體分支 branch: 佈署分支   repo:theme  branch: 對喜歡的theme fork, 對於主題的修改都會新增在這邊。     github pages  github寄放靜態網站功能   github action  用於建構並佈署    安裝hugo 詳細內容可以看官網
+ 設定chocolatey: 用系統管理者開啟powershell後輸入  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://c5k6.github.io/2022/02/24/build-hugo-site/"><meta property="article:section" content="post">
 <meta property="article:published_time" content="2022-02-24T03:37:48+08:00">
 <meta property="article:modified_time" content="2022-02-24T03:37:48+08:00">
 <meta itemprop=name content="Build Hugo Site">
-<meta itemprop=description content="建立全自動部屬的hugo靜態網站 本篇文章使用的是hugo本地預覽後，直接推送修改到github上，然後觸發github-action然後部屬到gitpages 不是通常的推本地編譯好的public資料夾到gitpages上。
-大綱 這篇文章內容:
- 安裝hugo 創建一個hugo專案 兩個github repo  blogger，包含兩個分支  blogger本體分支 佈署分支   theme  對喜歡的theme fork, 對於主題的修改都會新增在這邊。     github pages  github寄放靜態網站功能   github action  用於建構並佈署    安裝hugo 詳細內容可以看官網
- 設定chocolatey: 用系統管理者開啟powershell後輸入  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) 安裝hugo  choco install hugo -confirm 創建hugo專案 REM 創建專案 hugo new site quickstart REM 使用submodule管理theme，路徑放置在themes/ananke cd quickstart git init git submodule add https://github."><meta itemprop=datePublished content="2022-02-24T03:37:48+08:00">
+<meta itemprop=description content="建立全自動部屬的hugo靜態網站 本篇最後成果會是只要pushcommit後，就會自動部屬到git-pages上，直接進行blogger的更新。
+ 發布文章流程:   寫文章->git push->blogger看成果
+  開發及部屬流程:   寫文章->本地hugo server預覽->gitpush到gihutb上->github-action被觸發建構hugo靜態網站到git-pages->成功發布文章
+ 大綱 這篇文章內容:
+ 安裝hugo 創建一個hugo專案 兩個github repo  repo: blogger(包含兩個分支)  branch: blogger本體分支 branch: 佈署分支   repo:theme  branch: 對喜歡的theme fork, 對於主題的修改都會新增在這邊。     github pages  github寄放靜態網站功能   github action  用於建構並佈署    安裝hugo 詳細內容可以看官網
+ 設定chocolatey: 用系統管理者開啟powershell後輸入  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System."><meta itemprop=datePublished content="2022-02-24T03:37:48+08:00">
 <meta itemprop=dateModified content="2022-02-24T03:37:48+08:00">
-<meta itemprop=wordCount content="357">
+<meta itemprop=wordCount content="368">
 <meta itemprop=keywords content="hugo,全自動部署,github,action,github pages,web,">
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="Build Hugo Site">
-<meta name=twitter:description content="建立全自動部屬的hugo靜態網站 本篇文章使用的是hugo本地預覽後，直接推送修改到github上，然後觸發github-action然後部屬到gitpages 不是通常的推本地編譯好的public資料夾到gitpages上。
-大綱 這篇文章內容:
- 安裝hugo 創建一個hugo專案 兩個github repo  blogger，包含兩個分支  blogger本體分支 佈署分支   theme  對喜歡的theme fork, 對於主題的修改都會新增在這邊。     github pages  github寄放靜態網站功能   github action  用於建構並佈署    安裝hugo 詳細內容可以看官網
- 設定chocolatey: 用系統管理者開啟powershell後輸入  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')) 安裝hugo  choco install hugo -confirm 創建hugo專案 REM 創建專案 hugo new site quickstart REM 使用submodule管理theme，路徑放置在themes/ananke cd quickstart git init git submodule add https://github.">
+<meta name=twitter:description content="建立全自動部屬的hugo靜態網站 本篇最後成果會是只要pushcommit後，就會自動部屬到git-pages上，直接進行blogger的更新。
+ 發布文章流程:   寫文章->git push->blogger看成果
+  開發及部屬流程:   寫文章->本地hugo server預覽->gitpush到gihutb上->github-action被觸發建構hugo靜態網站到git-pages->成功發布文章
+ 大綱 這篇文章內容:
+ 安裝hugo 創建一個hugo專案 兩個github repo  repo: blogger(包含兩個分支)  branch: blogger本體分支 branch: 佈署分支   repo:theme  branch: 對喜歡的theme fork, 對於主題的修改都會新增在這邊。     github pages  github寄放靜態網站功能   github action  用於建構並佈署    安裝hugo 詳細內容可以看官網
+ 設定chocolatey: 用系統管理者開啟powershell後輸入  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.">
 <meta name=twitter:site content="@Che_Wei_Chang">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES2C6D66JH"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','G-ES2C6D66JH')</script>
@@ -143,7 +149,7 @@ Build Hugo Site
 <i class="fa fa-calendar"></i>
 <time datetime="2022-02-24 03:37:48 +0800 +0800" itemprop=datePublished>2022-02-24</time>
 &#183;
-357
+368
 words
 &#183;
 2
@@ -171,8 +177,19 @@ minute read
 </header>
 <div class=article-entry itemprop=articleBody>
 <h1 id=建立全自動部屬的hugo靜態網站>建立全自動部屬的hugo靜態網站</h1>
-<p>本篇文章使用的是hugo本地預覽後，直接推送修改到github上，然後觸發github-action然後部屬到gitpages
-不是通常的推本地編譯好的public資料夾到gitpages上。</p>
+<p>本篇最後成果會是只要pushcommit後，就會自動部屬到git-pages上，直接進行blogger的更新。</p>
+<ul>
+<li>發布文章流程:</li>
+</ul>
+<blockquote>
+<p>寫文章->git push->blogger看成果</p>
+</blockquote>
+<ul>
+<li>開發及部屬流程:</li>
+</ul>
+<blockquote>
+<p>寫文章->本地hugo server預覽->gitpush到gihutb上->github-action被觸發建構hugo靜態網站到git-pages->成功發布文章</p>
+</blockquote>
 <h2 id=大綱>大綱</h2>
 <p>這篇文章內容:</p>
 <ol>
@@ -180,15 +197,15 @@ minute read
 <li>創建一個hugo專案</li>
 <li>兩個github repo
 <ol>
-<li>blogger，包含兩個分支
+<li>repo: blogger(包含兩個分支)
 <ol>
-<li>blogger本體分支</li>
-<li>佈署分支</li>
+<li>branch: blogger本體分支</li>
+<li>branch: 佈署分支</li>
 </ol>
 </li>
-<li>theme
+<li>repo:theme
 <ul>
-<li>對喜歡的theme fork, 對於主題的修改都會新增在這邊。</li>
+<li>branch: 對喜歡的theme fork, 對於主題的修改都會新增在這邊。</li>
 </ul>
 </li>
 </ol>
@@ -247,15 +264,15 @@ your content
 <p>英文:https://gohugo.io/hosting-and-deployment/hosting-on-github/</p>
 <p>基本上是建議先使用<code>https://&lt;USERNAME|ORGANIZATION>.github.io/</code>去創建你的github</p>
 <h2 id=github>github</h2>
-<h3 id=git-repo架構兩個repo>git repo架構:兩個repo</h3>
+<h3 id=git-repo架構>git repo架構:</h3>
 <ol>
-<li>blogger 文章存放用的: <code>https://&lt;USERNAME|ORGANIZATION>.github.io/</code>
+<li>repo: blogger 文章存放用的: <code>https://&lt;USERNAME|ORGANIZATION>.github.io/</code>
 <ul>
-<li>main: 存放你的hugo文章本體</li>
+<li>main: 存放你的hugo文章本體的分支</li>
 <li>pg-pages: 當你push文章到main後，觸發git action部屬的分支</li>
 </ul>
 </li>
-<li>github hugo themes : 這邊先使用現有的<code>https://github.com/theNewDynamic/gohugo-theme-ananke.git</code>
+<li>repo: github hugo themes : 先使用現有的<code>https://github.com/theNewDynamic/gohugo-theme-ananke.git</code>
 <ul>
 <li>未來有修改theme架構或是圖片的時，可以自己fork一個theme，並將修改push到github上</li>
 </ul>
