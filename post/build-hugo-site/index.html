@@ -1,0 +1,116 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:site_name" content="Jeffery Blog"><meta property="og:type" content="article"><meta property="og:image" content="https://c5k6.github.io/img/home-bg-jeep.jpg"><meta property="twitter:image" content="https://c5k6.github.io/img/home-bg-jeep.jpg"><meta name=title content="Build Hugo Site"><meta property="og:title" content="Build Hugo Site"><meta property="twitter:title" content="Build Hugo Site"><meta name=description content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。"><meta property="og:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。"><meta property="twitter:description" content="赵化冰，程序员, 开源爱好者，生活探险家 | 这里是 赵化冰 的博客，与你一起发现更大的世界。"><meta property="twitter:card" content="summary"><meta name=keyword content="Jeffery, , 赵化冰的网络日志, 赵化冰的博客, Zhaohuabing Blog, 博客, 个人网站, 互联网, Web, 云原生, PaaS, Istio, Kubernetes, 微服务, Microservice"><link rel="shortcut icon" href=/img/favicon.ico><title>Build Hugo Site-Jeffery的博客 | Zhaohuabing Blog</title><link rel=canonical href=/post/build-hugo-site/><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/hugo-theme-cleanwhite.min.css><link rel=stylesheet href=/css/zanshang.css><link href=//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css rel=stylesheet type=text/css><script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js></script>
+<script src=/js/hux-blog.min.js></script></head><nav class="navbar navbar-default navbar-custom navbar-fixed-top"><div class=container-fluid><div class="navbar-header page-scroll"><button type=button class=navbar-toggle>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button>
+<a class=navbar-brand href=/>Jeffery Blog</a></div><div id=huxblog_navbar><div class=navbar-collapse><ul class="nav navbar-nav navbar-right"><li><a href=/>Home</a></li><li><a href=/categories/%E6%9E%B6%E8%A8%ADhugo%E9%9D%9C%E6%85%8B%E7%B6%B2%E7%AB%99>架設hugo靜態網站</a></li><li><a href=/top/books/>BOOKS</a></li><li><a href=/top/archive/>ARCHIVE</a></li><li><a href=/top/about/>ABOUT</a></li><li><a href=/search><i class="fa fa-search"></i></a></li></ul></div></div></div></nav><script>var $body=document.body,$toggle=document.querySelector(".navbar-toggle"),$navbar=document.querySelector("#huxblog_navbar"),$collapse=document.querySelector(".navbar-collapse");$toggle.addEventListener("click",handleMagic);function handleMagic(){$navbar.className.indexOf("in")>0?($navbar.className=" ",setTimeout(function(){$navbar.className.indexOf("in")<0&&($collapse.style.height="0px")},400)):($collapse.style.height="auto",$navbar.className+=" in")}</script><style type=text/css>header.intro-header{background-image:url(/img/home-bg-jeep.jpg)}</style><header class=intro-header><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><div class=tags><a class=tag href=/tags/hugo title=hugo>hugo</a>
+<a class=tag href=/tags/%E5%85%A8%E8%87%AA%E5%8B%95%E9%83%A8%E7%BD%B2 title=全自動部署>全自動部署</a>
+<a class=tag href=/tags/github title=github>github</a>
+<a class=tag href=/tags/action title=action>action</a>
+<a class=tag href=/tags/github-pages title="github pages">github pages</a>
+<a class=tag href=/tags/web title=web>web</a></div><h1>Build Hugo Site</h1><h2 class=subheading></h2><span class=meta>Posted by
+Jeffery Blog
+on
+Thursday, February 24, 2022</span></div></div></div></div></header><article><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+post-container"><h1 id=建立全自動部屬的hugo靜態網站>建立全自動部屬的hugo靜態網站</h1><p>本篇最後成果會是只要pushcommit後，就會自動部屬到git-pages上，直接進行blogger的更新。</p><ul><li>發布文章流程:</li></ul><blockquote><p>寫文章->git push->blogger看成果</p></blockquote><ul><li>開發及部屬流程:</li></ul><blockquote><p>寫文章->本地hugo server預覽->gitpush到gihutb上->github-action被觸發建構hugo靜態網站到git-pages->成功發布文章</p></blockquote><h2 id=大綱>大綱</h2><p>這篇文章內容:</p><ol><li>安裝hugo</li><li>創建一個hugo專案</li><li>兩個github repo<ol><li>repo: blogger(包含兩個分支)<ol><li>branch: blogger本體分支</li><li>branch: 佈署分支</li></ol></li><li>repo:theme<ul><li>branch: 對喜歡的theme fork, 對於主題的修改都會新增在這邊。</li></ul></li></ol></li><li>github pages<ul><li>github寄放靜態網站功能</li></ul></li><li>github action<ul><li>用於建構並佈署</li></ul></li></ol><h2 id=安裝hugo>安裝hugo</h2><p>詳細內容可以看<a href=https://gohugo.io/getting-started/installing/>官網</a></p><ol><li>設定<a href=https://chocolatey.org/install>chocolatey</a>:
+用系統管理者開啟powershell後輸入</li></ol><pre tabindex=0><code>Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https://community.chocolatey.org/install.ps1&#39;))
+</code></pre><ol start=2><li>安裝hugo</li></ol><pre tabindex=0><code>choco install hugo -confirm
+</code></pre><h2 id=創建hugo專案>創建hugo專案</h2><pre tabindex=0><code>REM 創建專案
+hugo new site quickstart
+
+REM 使用submodule管理theme，路徑放置在themes/ananke
+cd quickstart
+git init
+git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
+
+REM 在config.toml上補上theme = &#34;ananke&#34;
+echo theme = &#34;ananke&#34; &gt;&gt; config.toml
+
+REM 寫文章，預設路徑在content資料夾下
+hugo new posts/my-first-post.md
+</code></pre><p>會出現這樣的檔案內容，本地伺服器會忽略draft的設定，當要放到真的網站上的時候要把<strong>draft設定成false</strong></p><pre tabindex=0><code>---
+title: &#34;My First Post&#34;
+date: 2022-02-24T23:42:50+08:00
+draft: true
+---
+your content
+</code></pre><p>你也可以選擇使用其他<a href=https://themes.gohugo.io/>hugo的themes</a>, config.toml的theme名稱記得要改成你資料夾的名稱themes/<strong>ananke</strong></p><p>啟動hugo server:</p><pre tabindex=0><code>hugo server -D
+</code></pre><p>從輸出訊息可以找出網址位址</p><pre tabindex=0><code>Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+</code></pre><hr><p>以上都是官網簡單的教學，接下來的步驟基本上建議參考官網上的資訊，這邊紀錄其他比較細節的東西。</p><p>英文:https://gohugo.io/hosting-and-deployment/hosting-on-github/</p><p>基本上是建議先使用<code>https://&lt;USERNAME|ORGANIZATION>.github.io/</code>去創建你的github</p><h2 id=github>github</h2><h3 id=git-repo架構>git repo架構:</h3><ol><li>repo: blogger 文章存放用的: <code>https://&lt;USERNAME|ORGANIZATION>.github.io/</code><ul><li>main: 存放你的hugo文章本體的分支</li><li>pg-pages: 當你push文章到main後，觸發git action部屬的分支</li></ul></li><li>repo: github hugo themes : 先使用現有的<code>https://github.com/theNewDynamic/gohugo-theme-ananke.git</code><ul><li>未來有修改theme架構或是圖片的時，可以自己fork一個theme，並將修改push到github上</li></ul></li></ol><h4 id=blogger-repo>blogger repo</h4><p>創建github repo後照著quick setup將你本地hugo資料夾用git init後並推送到github上
+修改</p><ol><li><strong>main分支</strong></li></ol><p><a href=https://gohugo.io/hosting-and-deployment/hosting-on-github/#change-baseurl-in-configtoml>修改config.toml的baseURL</a></p><p>baseURL: <code>https://&lt;USERNAME>.github.io/&lt;REPOSITORY_NAME></code></p><pre tabindex=0><code>echo &#34;this is for hugo content&#34; &gt;&gt; README.md
+git init
+git add README.md
+git commit -m &#34;first commit&#34;
+git branch -M main
+git remote add origin https://github.com/&lt;USERNAME&gt;/&lt;USERNAME&gt;.github.io.git
+git push -u origin main
+</code></pre><ol start=2><li><strong>pg-pages分支</strong></li></ol><pre tabindex=0><code>## 建立空分支
+git checkout --orphan gh-pages
+# 清除分支初始檔案
+git reset --hard
+## 建立
+echo &#34;this is for depoly branch&#34; &gt; &#34;README.md&#34;
+git add .
+git commit -m &#34;gh-pages first commit&#34;
+git push -u origin gh-pages
+</code></pre><blockquote><p><a href=https://stackoverflow.com/questions/13969050/creating-a-new-empty-branch-for-a-new-project>創建空分支: git &ndash;orphan</a></p></blockquote><h3 id=github-action>github-action</h3><p>基於Hugo setup去製作github action，</p><p><a href=https://gohugo.io/hosting-and-deployment/hosting-on-github/#build-hugo-with-github-action>官網說明:</a>
+本地端建立<code>.github/workflows/gh-pages.yml</code>檔案，可以發現jobs->deploy 使用了setup Hugo的action</p><p>這邊的github_tokeh先在個人的setting中連結<code>https://github.com/settings/tokens</code>選擇workflow後產生token，請記好你的token，複製起來放到你的<code>https://github.com/&lt;USERNAME>/&lt;USERNAME>.github.io.git/settings/secrets/actions</code></p><pre tabindex=0><code>name: github pages
+
+on:
+  push:
+    branches:
+      - main  # Set a branch to deploy
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: &#39;latest&#39;
+          # extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == &#39;refs/heads/main&#39;
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+</code></pre><p>切回main分支開始處理hugo設定，後續就不太需要管gh-pages了，他會被自動部屬。</p><pre tabindex=0><code>git checkout main
+
+# commit 後push到main分支
+git add .github/workflows/gh-pages.yml
+git commit -m &#34;add github action scripts&#34;
+git push -u origin main
+</code></pre><h3 id=github-pages>github-pages</h3><p>請到<code>https://github.com/&lt;USERNAME>/&lt;USERNAME>.github.io.git/settings/pages</code> 將你的 branch改成gh-pages</p><h2 id=結論>結論</h2><p>本篇主要說明github分支建立方式，透過main分支做hugo設定，並透過gh-pages用於自動部屬。
+依照本篇設定完之後後續在main分支上透過</p><ol><li><code>hugo new posts/post_name.md</code>撰寫文章</li><li>寫完後執行</li></ol><pre tabindex=0><code>git add .
+git commit -m &#34;message&#34;
+git push -u origin main
+</code></pre><ol start=3><li>等待git action執行完成，blog就會更新了</li><li>後續建議可以自己fork一個theme，然後把自己的theme git origin更新，就可以客製化你的網站了。</li><li>在theme/你的theme資料夾下更新url
+<code>git remote set-url origin git@github.com:user/your_theme.git</code></li><li>在修改theme資源並commit後，你必須同時更新blogger main分支下的.gitmodules並push到github上，這樣github上的部屬才會生效。</li></ol><h2 id=參考資源>參考資源:</h2><p><a href=https://gohugo.io/getting-started/external-learning-resources/>https://gohugo.io/getting-started/external-learning-resources/</a></p><p>其中簡單點的可以參考MikeDane去看一下基本架構
+<a href="https://www.youtube.com/watch?list=PLLAZ4kZ9dFpOnyRlyS-liKL5ReHDcj4G3&v=qtIqKaDlqXo">https://www.youtube.com/watch?list=PLLAZ4kZ9dFpOnyRlyS-liKL5ReHDcj4G3&v=qtIqKaDlqXo</a></p><hr><ul class=pager><li class=previous><a href=/post/hello/ data-toggle=tooltip data-placement=top title=Hello>&larr;
+Previous Post</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
+visible-lg-block
+sidebar-container
+catalog-container"><div class=side-catalog><hr class="hidden-sm hidden-xs"><h5><a class=catalog-toggle href=#>CATALOG</a></h5><ul class=catalog-body></ul></div></div><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+sidebar-container"><section><hr class="hidden-sm hidden-xs"><h5><a href=/tags/>FEATURED TAGS</a></h5><div class=tags></div></section><section><hr><h5>FRIENDS</h5><ul class=list-inline><li><a target=_blank href=https://buzzcutlearning.blogspot.com/>buzzcutlearning</a></li></ul></section></div></div></div></article><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center"><li><a href rel=alternate type=application/rss+xml title="Jeffery Blog"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-rss fa-stack-1x fa-inverse"></i></span></a></li><li><a href=mailto:jeffery062@gmail.com><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://github.com/yourgithub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://www.linkedin.com/in/%E5%93%B2%E7%B6%AD-%E5%BC%B5-5ba8b210b/><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="copyright text-muted">Copyright &copy; Jeffery Blog 2022<br><a href=https://themes.gohugo.io/hugo-theme-cleanwhite>CleanWhite Hugo Theme</a> by <a href=https://zhaohuabing.com>Huabing</a> |
+<iframe style=margin-left:2px;margin-bottom:-5px frameborder=0 scrolling=0 width=100px height=20px src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true"></iframe></p></div></div></div></footer><script src=https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js></script>
+<script>function loadAsync(i,t){var n=document,s="script",e=n.createElement(s),o=n.getElementsByTagName(s)[0];e.src=i,t&&e.addEventListener("load",function(e){t(null,e)},!1),o.parentNode.insertBefore(e,o)}</script><script>$("#tag_cloud").length!==0&&loadAsync("/js/jquery.tagcloud.js",function(){$.fn.tagcloud.defaults={color:{start:"#bbbbee",end:"#0085a1"}},$("#tag_cloud a").tagcloud()})</script><script>loadAsync("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js",function(){var e=document.querySelector("nav");e&&FastClick.attach(e)})</script><script type=text/javascript>function generateCatalog(e){_containerSelector="div.post-container";var r=$(_containerSelector),s,o,i,a,t,n=r.find("h1,h2,h3,h4,h5,h6");return $(e).html(''),n.each(function(){s=$(this).prop("tagName").toLowerCase(),a="#"+$(this).prop("id"),o=$(this).text(),t=$('<a href="'+a+'" rel="nofollow">'+o+"</a>"),i=$('<li class="'+s+'_nav"></li>').append(t),$(e).append(i)}),!0}generateCatalog(".catalog-body"),$(".catalog-toggle").click(function(e){e.preventDefault(),$(".side-catalog").toggleClass("fold")}),loadAsync("/js/jquery.nav.js",function(){$(".catalog-body").onePageNav({currentClass:"active",changeHash:!1,easing:"swing",filter:"",scrollSpeed:700,scrollOffset:0,scrollThreshold:.2,begin:null,end:null,scrollChange:null,padding:80})})</script></body></html>
