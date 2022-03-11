@@ -5,8 +5,15 @@ draft: false
 tags: ["hugo", "全自動部署", "github", "action", "github pages", "web"]
 categories: ["架設hugo靜態網站"]
 banner: https://d33wubrfki0l68.cloudfront.net/c38c7334cc3f23585738e40334284fddcaf03d5e/2e17c/images/hugo-logo-wide.svg
-
 ---
+
+<div class="mermaid">
+graph LR;
+    A[Self] -->|Commit| B
+    B[Github] --> C
+    C[Github Actions] -->|Build/Deploy| D
+    D[Github Pages]
+</div>
 
 # 建立全自動部屬的hugo靜態網站
 本篇最後成果會是只要pushcommit後，就會自動部屬到git-pages上，直接進行blogger的更新。
